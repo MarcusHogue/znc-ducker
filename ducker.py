@@ -31,12 +31,7 @@ class ducker(znc.Module):
             'What is that thing?','Is that a duck?','I\'m scared of ducks','Oh, that one looks friendly!','Kill it with fire!','.bef','.bang',
         ]
         own_host = self.GetNetwork().GetIRCNick().GetHostMask()
-#        msg = 'PRIVMSG #{channel} :{msg}'.format(channel=channel, msg=msg)
-#        duckregex = re.compile(ur'[.*\\_o<.*|.*\\_O<.*|.*\\_0<.*|.*\\_ö<.*|.*\\_ø<.*|.*\\_ó<.*]')
         duckregex = '.*\\_o<.*|.*\\_O<.*|.*\\_0<.*'
-#        duckregex = re.compile('[.*\\_ó<.*]')
-#        duckregex = '.*\\_o<.*'
-#        duckregex = '.*hi.*'
         msg = str(message)
         if re.match(duckregex, msg) is not None:
              response = random.choice(self.responses)
