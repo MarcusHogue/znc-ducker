@@ -35,6 +35,7 @@ class ducker(znc.Module):
         duckregex = '[oO0öøóóȯôőŏᴏōο](<|>|＜)'
         msg = str(message)
         if re.search(duckregex, msg) is not None:
+             self.PutModule("INCOMING!")
              response = random.choice(self.responses)
              delay = random.randint(0,99)/10+1
              time.sleep(delay)
@@ -42,4 +43,5 @@ class ducker(znc.Module):
              self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=msg))
              self.PutModule("Hey, {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
              self.PutModule("I said \"{0}\" in response and waited {1} seconds".format(response, delay))
+             self.GetModule('I tried to PutUser:{own_host} {msg}'.format(own_host=own_host, msg=msg))
         return znc.CONTINUE
