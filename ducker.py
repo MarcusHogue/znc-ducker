@@ -32,9 +32,9 @@ class ducker(znc.Module):
             'What is that thing?','Is that a duck?','I\'m scared of ducks','Oh, that one looks friendly!','Kill it with fire!','.bef','.bang',
         ]
         own_host = self.GetNetwork().GetIRCNick().GetHostMask()
-        duckregex = '[o○O0öøóóȯôőŏᴏōο](<|>|＜)'
+        duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|>|＜)')
         msg = str(message)
-        if re.search(duckregex, msg) is not None:
+        if duck_re.search(msg) is not None:
              self.PutModule("INCOMING!")
              response = random.choice(self.responses)
              delay = random.randint(0,99)/10+1
