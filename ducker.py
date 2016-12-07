@@ -36,9 +36,10 @@ class ducker(znc.Module):
         msg = str(message)
         if re.search(duckregex, msg) is not None:
              response = random.choice(self.responses)
-             time.sleep(randint(0,99)/10+1)
+             delay = random.randint(0,99)/10+1
+             time.sleep(delay)
              self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
              self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=msg))
              self.PutModule("Hey, {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
-             self.PutModule("I said \"{0}\" in response".format(response))
+             self.PutModule("I said \"{0}\" in response and waited {1} seconds".format(response, delay))
         return znc.CONTINUE
