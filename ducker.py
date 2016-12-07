@@ -22,6 +22,7 @@ Purpose: React, auto-shoot, or befriend gonzobot ducks
 import znc
 import re
 import random
+import time
 
 class ducker(znc.Module):
     description = "Example python3 module for ZNC"
@@ -35,6 +36,7 @@ class ducker(znc.Module):
         msg = str(message)
         if re.search(duckregex, msg) is not None:
              response = random.choice(self.responses)
+             time.sleep(randint(0,99)/10+1)
              self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
              self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=msg))
              self.PutModule("Hey, {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
