@@ -43,7 +43,7 @@ class ducker(znc.Module):
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|>|＜)')
         msg = str(message)
         msg = msg.replace('\u200b', '')
-        if nick.GetNick() = botname and duck_re.search(msg) is not None:
+        if nick.GetNick() == botname and duck_re.search(msg) is not None:
              self.PutModule("INCOMING!")
              response = random.choice(self.responses)
              delay = random.randint(0,99)/10+1
