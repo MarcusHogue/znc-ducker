@@ -29,13 +29,21 @@ class ducker(znc.Module):
 
     def OnChanMsg(self, nick, channel, message):
         self.responses = [
-            'What is that thing?','Is that a duck?','I\'m scared of ducks','Oh, that one looks friendly!','Kill it with fire!','.bef','.bang',
+            'What is that thing?','Is that a duck?',
+            'I\'m scared of ducks','Oh, that one looks friendly!',
+            'Kill it with fire!','.bef',
+            '.bang','.bfe',
+            '.bnag','bang',
+            'bef','.befriend'
+            'I\'m not feeling this one','I need coffee',
+            'My cousin was bitten by a duck once','/me runs away',
         ]
-        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
+        botname = "gonzobot"
+#        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|>|＜)')
         msg = str(message)
         msg = msg.replace('\u200b', '')
-        if duck_re.search(msg) is not None:
+        if nick.GetNick() = botname and duck_re.search(msg) is not None:
              self.PutModule("INCOMING!")
              response = random.choice(self.responses)
              delay = random.randint(0,99)/10+1
