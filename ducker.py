@@ -34,7 +34,7 @@ class ducker(znc.Module):
             'Kill it with fire!','.bef',
             '.bang','.bfe',
             '.bnag','bang',
-            'bef','.befriend'
+            'bef','.befriend',
             'I\'m not feeling this one','I need coffee',
             'My cousin was bitten by a duck once','/me runs away',
         ]
