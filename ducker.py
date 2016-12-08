@@ -37,6 +37,18 @@ class ducker(znc.Module):
             'bef','.befriend',
             'I\'m not feeling this one','I need coffee',
             'My cousin was bitten by a duck once','/me runs away',
+            '¯\\_(ツ)_/¯','.lenny',
+            '\\o/','.flip DUCK!',
+            '.ask Is that a duck?','ლ(ಠ益ಠ)ლ',
+            '༼ ༎ຶ ෴ ༎ຶ༽','「(°ヘ°)',
+            'ᕕ( ᐛ )ᕗ','(╯°□°）╯︵ ┻━┻',
+            '༼ つ ◕_◕ ༽つ','(✿◠‿◠)',
+            '¯(°_o)/¯','(͡° ͜ʖ ͡°)',
+            '(ಠ_ಠ)','(╯_╰)',
+            '(─‿‿─)','\,,/(^_^)\,,/',
+            '(¬､¬)','(ﾉﾟ0ﾟ)ﾉ',
+            '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
+            '^(;,;)^',
         ]
         botname = "gonzobot"
 #        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
