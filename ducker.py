@@ -56,7 +56,7 @@ class ducker(znc.Module):
 
     def OnChanMsg(self, nick, channel, message):
         own_host = self.GetNetwork().GetIRCNick().GetHostMask()
-        channel = channel.GetName())
+        channel = channel.GetName()
         nick = nick.GetNick()
         msg = str(message)
         msg = msg.replace('\u200b', '')
