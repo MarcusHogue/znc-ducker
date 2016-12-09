@@ -67,7 +67,7 @@ class ducker(znc.Module):
              delay = random.randint(0,99)/10+1
              time.sleep(delay)
              self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
-             self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=response))
              self.PutModule("Triggered when {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
              self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
+             self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=response))
         return znc.CONTINUE
