@@ -52,7 +52,7 @@ class ducker(znc.Module):
         ]
         botname = "gonzobot"
 #        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
-        duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|>|＜)')
+        duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
         decoy = 'DECOY DUCK'
         msg = str(message)
         msg = msg.replace('\u200b', '')
