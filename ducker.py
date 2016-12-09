@@ -58,11 +58,14 @@ class ducker(znc.Module):
         msg = msg.replace('\u200b', '')
         if nick.GetNick() == botname and duck_re.search(msg) is not None:
              self.PutModule("INCOMING IN {}!".format(channel.GetName()))
-             if msg.find(decoy) != -1: self.PutModule("(I think it's a DECOY)")
-             response = random.choice(self.responses)
+             if msg.find(decoy) != -1:
+                self.PutModule("(I think it's a DECOY)")
+                response = 'nice try.'
+             else:
+                response = random.choice(self.responses)
              delay = random.randint(0,99)/10+1
              time.sleep(delay)
              self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
-             self.PutModule("Hey, {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
+             self.PutModule("Triggered when {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
              self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
         return znc.CONTINUE
