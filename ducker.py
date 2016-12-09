@@ -25,7 +25,8 @@ import random
 import time
 
 class ducker(znc.Module):
-    description = "Example python3 module for ZNC"
+    description = "Gonzobot duck autoresponder for ZNC"
+    module_types = [znc.CModInfo.NetworkModule]
 
     def OnChanMsg(self, nick, channel, message):
         self.responses = [
@@ -51,7 +52,7 @@ class ducker(znc.Module):
             '^(;,;)^',
         ]
         botname = "gonzobot"
-#        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
+        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
         decoy = 'DECOY DUCK'
         msg = str(message)
@@ -66,6 +67,7 @@ class ducker(znc.Module):
              delay = random.randint(0,99)/10+1
              time.sleep(delay)
              self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
+             self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=response))
              self.PutModule("Triggered when {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
              self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
         return znc.CONTINUE
