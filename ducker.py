@@ -12,8 +12,6 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-#
-#  duck regex match : \\_o<|\\_O<|\\_0<|\\_\u00f6<|\\_\u00f8<|\\_\u00f3<
 
 """A module for ZNC (IRC bouncer software)
 Purpose: React, auto-shoot, or befriend gonzobot ducks
@@ -28,7 +26,7 @@ class ducker(znc.Module):
     module_types = [znc.CModInfo.NetworkModule]
 
     def OnLoad(self, args, message):
-        self.responses = [
+        responses = [
             'What is that thing?','Is that a duck?',
             'I\'m scared of ducks','Oh, that one looks friendly!',
             'Kill it with fire!','.bef',
@@ -66,7 +64,7 @@ class ducker(znc.Module):
 
     def duck_react(self, msg, channel, nick, own_host):
         self.PutModule("INCOMING IN {}!".format(channel)
-        if msg.find(decoy) != -1:
+        if self.msg.find(decoy) != -1:
             self.PutModule("(I think it's a DECOY)")
             response = 'nice try.'
         else:
