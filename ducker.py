@@ -51,6 +51,7 @@ class ducker(znc.Module):
         botname = "gonzobot"
         decoy = 'DECOY DUCK'
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
+        return True
 
     def OnChanMsg(self, nick, channel, message):
         own_host = self.GetNetwork().GetIRCNick().GetHostMask()
