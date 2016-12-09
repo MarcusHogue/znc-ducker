@@ -62,10 +62,9 @@ class ducker(znc.Module):
             self.duck_react(msg, channel, nick, own_host)
         return znc.CONTINUE
 
-    def duck_react(self, message, channel, nick, own_host):
-        self.PutModule("INCOMING IN {}!".format(channel)
-        self.msg = str(message)
-        if self.msg.find(decoy) != -1:
+    def duck_react(self, msg, channel, nick, own_host):
+        self.PutModule("INCOMING IN {}!".format(channel))
+        if msg.find(decoy) != -1:
             self.PutModule("(I think it's a DECOY)")
             response = 'nice try.'
         else:
