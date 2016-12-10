@@ -54,7 +54,7 @@ class ducker(znc.Module):
             '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
             '^(;,;)^','TRIGGERED',
         ]
-        botname = "gonzobot"
+        botnames = ['gonzobot','slaybot']
         decoy = 'DECOY DUCK'
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
         return True
@@ -65,8 +65,9 @@ class ducker(znc.Module):
         nick = nick.GetNick()
         msg = str(message)
         msg = msg.replace('\u200b', '')
-        if nick == botname and duck_re.search(msg) is not None:
-            threading.start(self.duck_react(msg, channel, nick, own_host))
+        for bot in botnames
+            if nick == bot and duck_re.search(msg) is not None:
+                threading.start(self.duck_react(msg, channel, nick, own_host))
         return znc.CONTINUE
 
     def duck_react(self, msg, channel, nick, own_host):
