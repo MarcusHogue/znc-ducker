@@ -20,12 +20,18 @@ import znc
 import re
 import random
 import time
+import threading
 
 class ducker(znc.Module):
     description = "Gonzobot duck autoresponder for ZNC"
     module_types = [znc.CModInfo.NetworkModule]
 
     def OnLoad(self, args, message):
+        # add toggles for hardcore
+        # add filters for channels
+        # add toggle for friend or bang preference
+        # add toggle to EVER friend or bang
+        # add config for timer (can go short if not shooting, right?)
         responses = [
             'What is that thing?','Is that a duck?',
             'I\'m scared of ducks','Oh, that one looks friendly!',
@@ -46,7 +52,7 @@ class ducker(znc.Module):
             '(─‿‿─)','\,,/(^_^)\,,/',
             '(¬､¬)','(ﾉﾟ0ﾟ)ﾉ',
             '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
-            '^(;,;)^',
+            '^(;,;)^','TRIGGERED',
         ]
         botname = "gonzobot"
         decoy = 'DECOY DUCK'
@@ -60,7 +66,7 @@ class ducker(znc.Module):
         msg = str(message)
         msg = msg.replace('\u200b', '')
         if nick == botname and duck_re.search(msg) is not None:
-            self.duck_react(msg, channel, nick, own_host)
+            threading.start(self.duck_react(msg, channel, nick, own_host))
         return znc.CONTINUE
 
     def duck_react(self, msg, channel, nick, own_host):
@@ -76,3 +82,4 @@ class ducker(znc.Module):
         self.PutModule("Triggered when {0} said {1} on {2}".format(nick, message.s, channel))
         self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
         self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=response))
+        return True
