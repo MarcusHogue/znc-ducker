@@ -67,7 +67,7 @@ class ducker(znc.Module):
         nick = nick.GetNick()
         msg = str(message)
         msg = msg.replace('\u200b', '')
-        for bot in botnames
+        for bot in botnames:
             if nick == bot and duck_re.search(msg) is not None:
                 threading.start(self.duck_react(msg, channel, nick, own_host))
         return znc.CONTINUE
