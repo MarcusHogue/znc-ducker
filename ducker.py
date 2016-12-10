@@ -25,38 +25,40 @@ import threading
 class ducker(znc.Module):
     description = "Gonzobot duck autoresponder for ZNC"
     module_types = [znc.CModInfo.NetworkModule]
+    # TODO:
+    # move all this crap to OnLoad
+    # add toggles for hardcore
+    # add filters for channels
+    # add toggle for friend or bang preference
+    # add toggle to EVER friend or bang
+    # add config for timer (can go short if not shooting, right?)
+    responses = [
+        'What is that thing?','Is that a duck?',
+        'I\'m scared of ducks','Oh, that one looks friendly!',
+        'Kill it with fire!','.bef',
+        '.bang','.bfe',
+        '.bnag','bang',
+        'bef','.befriend',
+        'I\'m not feeling this one','I need coffee',
+        'My cousin was bitten by a duck once','/me runs away',
+        '¯\\_(ツ)_/¯','.lenny',
+        '\\o/','.flip DUCK!',
+        '.ask Is that a duck?','ლ(ಠ益ಠ)ლ',
+        '༼ ༎ຶ ෴ ༎ຶ༽','「(°ヘ°)',
+        'ᕕ( ᐛ )ᕗ','(╯°□°）╯︵ ┻━┻',
+        '༼ つ ◕_◕ ༽つ','(✿◠‿◠)',
+        '¯(°_o)/¯','(͡° ͜ʖ ͡°)',
+        '(ಠ_ಠ)','(╯_╰)',
+        '(─‿‿─)','\,,/(^_^)\,,/',
+        '(¬､¬)','(ﾉﾟ0ﾟ)ﾉ',
+        '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
+        '^(;,;)^','TRIGGERED',
+    ]
+    botnames = ['gonzobot','slaybot']
+    decoy = 'DECOY DUCK'
+    duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
 
     def OnLoad(self, args, message):
-        # add toggles for hardcore
-        # add filters for channels
-        # add toggle for friend or bang preference
-        # add toggle to EVER friend or bang
-        # add config for timer (can go short if not shooting, right?)
-        responses = [
-            'What is that thing?','Is that a duck?',
-            'I\'m scared of ducks','Oh, that one looks friendly!',
-            'Kill it with fire!','.bef',
-            '.bang','.bfe',
-            '.bnag','bang',
-            'bef','.befriend',
-            'I\'m not feeling this one','I need coffee',
-            'My cousin was bitten by a duck once','/me runs away',
-            '¯\\_(ツ)_/¯','.lenny',
-            '\\o/','.flip DUCK!',
-            '.ask Is that a duck?','ლ(ಠ益ಠ)ლ',
-            '༼ ༎ຶ ෴ ༎ຶ༽','「(°ヘ°)',
-            'ᕕ( ᐛ )ᕗ','(╯°□°）╯︵ ┻━┻',
-            '༼ つ ◕_◕ ༽つ','(✿◠‿◠)',
-            '¯(°_o)/¯','(͡° ͜ʖ ͡°)',
-            '(ಠ_ಠ)','(╯_╰)',
-            '(─‿‿─)','\,,/(^_^)\,,/',
-            '(¬､¬)','(ﾉﾟ0ﾟ)ﾉ',
-            '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
-            '^(;,;)^','TRIGGERED',
-        ]
-        botnames = ['gonzobot','slaybot']
-        decoy = 'DECOY DUCK'
-        duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
         return True
 
     def OnChanMsg(self, nick, channel, message):
