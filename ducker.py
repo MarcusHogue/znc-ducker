@@ -60,7 +60,7 @@ class ducker(znc.Module):
         nick = nick.GetNick()
         for bot in botnames:
            if nick.GetNick() == bot and duck_re.search(msg) is not None:
-             self.duck_react(msg, channel, nick, own_host))
+             self.duck_react()
              self.PutModule("INCOMING IN {}!".format(channel.GetName()))
              if msg.find(decoy) != -1:
                 self.PutModule("(I think it's a DECOY)")
@@ -74,6 +74,6 @@ class ducker(znc.Module):
              self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
         return znc.CONTINUE
 
-        def duck_react(self, msg, channel, nick, own_host):
+        def duck_react(self):
             self.PutModule("duck_react function called successfully")
             return True
