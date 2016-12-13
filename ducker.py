@@ -21,6 +21,7 @@ import znc
 import re
 import random
 import time
+import threading
 
 class ducker(znc.Module):
     description = "Gonzobot duck autoresponder for ZNC"
@@ -47,16 +48,19 @@ class ducker(znc.Module):
             '(─‿‿─)','\,,/(^_^)\,,/',
             '(¬､¬)','(ﾉﾟ0ﾟ)ﾉ',
             '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
-            '^(;,;)^',
+            '^(;,;)^','TRIGGERED',
         ]
         botnames = ['gonzobot','slaybot']
-#        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
         decoy = 'DECOY DUCK'
         msg = str(message)
         msg = msg.replace('\u200b', '')
+        own_host = self.GetNetwork().GetIRCNick().GetHostMask()
+        channel = channel.GetName()
+        nick = nick.GetNick()
         for bot in botnames:
            if nick.GetNick() == bot and duck_re.search(msg) is not None:
+             self.duck_react(msg, channel, nick, own_host))
              self.PutModule("INCOMING IN {}!".format(channel.GetName()))
              if msg.find(decoy) != -1:
                 self.PutModule("(I think it's a DECOY)")
@@ -69,3 +73,7 @@ class ducker(znc.Module):
              self.PutModule("Triggered when {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
              self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
         return znc.CONTINUE
+
+        def duck_react(self, msg, channel, nick, own_host):
+            self.PutModule("duck_react function called successfully")
+            return True
