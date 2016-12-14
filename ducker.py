@@ -51,29 +51,32 @@ class ducker(znc.Module):
             '^(;,;)^','TRIGGERED',
         ]
         botnames = ['gonzobot','slaybot']
+        channels = ['#geeklist','#goml','##test']
         duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
         decoy = 'DECOY DUCK'
         msg = str(message)
         msg = msg.replace('\u200b', '')
         own_host = self.GetNetwork().GetIRCNick().GetHostMask()
-        channel = channel.GetName()
         nick = nick.GetNick()
-        for bot in botnames:
-           if nick.GetNick() == bot and duck_re.search(msg) is not None:
-             self.duck_react()
-             self.PutModule("INCOMING IN {}!".format(channel.GetName()))
-             if msg.find(decoy) != -1:
-                self.PutModule("(I think it's a DECOY)")
-                response = 'nice try.'
-             else:
-                response = random.choice(self.responses)
-             delay = random.randint(0,99)/10+1
-             time.sleep(delay)
-             self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
-             self.PutModule("Triggered when {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
-             self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
+        channelName = channel.GetName()
+        for chan in channels:
+           if channelName.lower() == chan:
+             for bot in botnames:
+                if nick.GetNick() == bot and duck_re.search(msg) is not None:
+#                  duck_react()
+                   self.PutModule("INCOMING IN {}!".format(channel.GetName()))
+                   if msg.find(decoy) != -1:
+                      self.PutModule("(I think it's a DECOY)")
+                      response = 'nice try.'
+                   else:
+                      response = random.choice(self.responses)
+                   delay = random.randint(0,99)/10+1
+                   time.sleep(delay)
+                   self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel.GetName(), response))
+                   self.PutModule("Triggered when {0} said {1} on {2}".format(nick.GetNick(), message.s, channel.GetName()))
+                   self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
         return znc.CONTINUE
 
-        def duck_react(self):
+        def duck_react():
             self.PutModule("duck_react function called successfully")
-            return True
+            return
