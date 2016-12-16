@@ -1,3 +1,4 @@
+#  ducker.py
 #  Copyright 2016 Marcus Hogue <marcus@hogue.me>
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,68 +12,77 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-#
-#  duck regex match : \\_o<|\\_O<|\\_0<|\\_\u00f6<|\\_\u00f8<|\\_\u00f3<
-#  Work in progress using Thor77's SlapAnswer as the starting point
 
 """A module for ZNC (IRC bouncer software)
-Purpose: auto-shoot (or befriend) gonzobot ducks
+Purpose: React, auto-shoot, or befriend gonzobot ducks
 """
-import random
-import json
 import znc
 import re
-
+import random
+import time
+import threading
 
 class ducker(znc.Module):
-    description = 'Do things to ducks automatically'
+    description = "Gonzobot duck autoresponder for ZNC"
     module_types = [znc.CModInfo.NetworkModule]
+    # TODO:
+    # move all this crap to OnLoad
+    # add toggles for hardcore
+    # add filters for channels
+    # add toggle for friend or bang preference
+    # add toggle to EVER friend or bang
+    # add config for timer (can go short if not shooting, right?)
+    responses = [
+        'What is that thing?','Is that a duck?',
+        'I\'m scared of ducks','Oh, that one looks friendly!',
+        'Kill it with fire!','.bef',
+        '.bang','.bfe',
+        '.bnag','bang',
+        'bef','.befriend',
+        'I\'m not feeling this one','I need coffee',
+        'My cousin was bitten by a duck once','/me runs away',
+        '¯\\_(ツ)_/¯','.lenny',
+        '\\o/','.flip DUCK!',
+        '.ask Is that a duck?','ლ(ಠ益ಠ)ლ',
+        '༼ ༎ຶ ෴ ༎ຶ༽','「(°ヘ°)',
+        'ᕕ( ᐛ )ᕗ','(╯°□°）╯︵ ┻━┻',
+        '༼ つ ◕_◕ ༽つ','(✿◠‿◠)',
+        '¯(°_o)/¯','(͡° ͜ʖ ͡°)',
+        '(ಠ_ಠ)','(╯_╰)',
+        '(─‿‿─)','\,,/(^_^)\,,/',
+        '(¬､¬)','(ﾉﾟ0ﾟ)ﾉ',
+        '( •_•)O*¯`·.¸.·´¯`°Q(•_• )',
+        '^(;,;)^','TRIGGERED',
+    ]
+    botnames = ['gonzobot','slaybot']
+    decoy = 'DECOY DUCK'
+    duck_re = re.compile('[o○O0öøóóȯôőŏᴏōο](<|＜)')
 
     def OnLoad(self, args, message):
-        self.default_answers = [
-            '.bef','.bang','.befriend','.bnag','.bfe',
-        ]
-        if 'answers' in self.nv:
-            self.ANSWERS = json.loads(self.nv['answers'])
-        else:
-            self.ANSWERS = self.default_answers
-            self.save_answers()
         return True
 
-    def OnModCommand(self, cmd):
-        split = cmd.split()
-        command = str(split[0]).lower()
-        args = [a.lower() for a in split[1:]]
-        if command == 'help':
-            self.command_help()
-        elif command == 'list':
-            self.command_list()
-
-    def save_answers(self):
-        self.nv['answers'] = json.dumps(self.ANSWERS)
-
-    def command_help(self):
-        self.PutModule('list | get a list with msgs')
-        return True
-
-    def command_list(self):
-        for index, value in enumerate(self.ANSWERS):
-            self.PutModule('{} | {}'.format(index, value))
-        return True
-
-    def OnChanAction(self, invoker, channel, message):
-        own_nick = self.GetNetwork().GetIRCNick().GetNick()
+    def OnChanMsg(self, nick, channel, message):
         own_host = self.GetNetwork().GetIRCNick().GetHostMask()
-        nick = invoker.GetNick()
         channel = channel.GetName()
-        duckregex = '\\_o<|\\_O<|\\_0<|\\_\u00f6<|\\_\u00f8<|\\_\u00f3<'
+        nick = nick.GetNick()
         msg = str(message)
-        if re.match(duckregex, msg) is not None:
-            self.get_duck(channel, own_host)
+        msg = msg.replace('\u200b', '')
+        for bot in botnames:
+            if nick == bot and duck_re.search(msg) is not None:
+                threading.start(self.duck_react(msg, channel, nick, own_host))
         return znc.CONTINUE
 
-    def get_duck(self, channel, own_host):
-        msg = random.choice(self.ANSWERS)
-        msg = 'PRIVMSG {channel} :{msg}'.format(channel=channel, msg=msg)
-        self.GetNetwork().PutIRC(msg)
-        self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=msg))
+    def duck_react(self, msg, channel, nick, own_host):
+        self.PutModule("INCOMING IN {}!".format(channel))
+        if msg.find(decoy) != -1:
+            self.PutModule("(I think it's a DECOY)")
+            response = 'nice try.'
+        else:
+            response = random.choice(self.responses)
+        delay = random.randint(0,99)/10+1
+        time.sleep(delay)
+        self.GetNetwork().PutIRC("PRIVMSG {0} :{1}".format(channel, response))
+        self.PutModule("Triggered when {0} said {1} on {2}".format(nick, message.s, channel))
+        self.PutModule("I waited {1} seconds and said \"{0}\" in response".format(response, delay))
+        self.GetNetwork().PutUser(':{own_host} {msg}'.format(own_host=own_host, msg=response))
+        return True
